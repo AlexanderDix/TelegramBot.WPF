@@ -9,8 +9,13 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Services\Interfaces\" />
     <Folder Include="ViewModels\Base\" />
     <Folder Include="ViewModels\WindowViewModels\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
   </ItemGroup>
 
 </Project>

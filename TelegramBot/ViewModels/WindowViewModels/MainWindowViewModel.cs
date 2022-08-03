@@ -7,7 +7,7 @@ internal class MainWindowViewModel : ViewModel
     #region Title : string - Заголовок окна
 
     ///<summary>Заголовок окна</summary>
-    private string? _title;
+    private string? _title = "Заголовок";
 
     ///<summary>Заголовок окна</summary>
     public string? Title
