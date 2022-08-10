@@ -1,23 +1,34 @@
 ﻿using System.Text.Json;
 using ConsoleTelegramBot.Models;
+using Telegram.Bot;
+using Telegram.Bot.Extensions.Polling;
+using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 namespace ConsoleTelegramBot;
 
 internal static class Program
 {
+    private const string UrlParameters = $"q=Ишим&appid={Configuration.ApiKey}&units=metric&lang=ru";
+    private const string Url = "https://api.openweathermap.org/data/2.5/weather?";
+    private static readonly CancellationTokenSource Cts = new();
+
     private static void Main(string[] args)
     {
+        ITelegramBotClient botClient = new TelegramBotClient(Configuration.Token);
+        CancellationToken cancellationToken = Cts.Token;
+        var receiverOptions = new ReceiverOptions()
+        {
+            AllowedUpdates = { }
+        };
+        botClient.StartReceiving(HandleUpdateAsync, HandleErrorAsync, receiverOptions, cancellationToken);
+
         Console.ReadLine();
     }
 
-    private const string UrlParameters = $"q=Ишим&appid={Configuration.ApiKey}&units=metric&lang=ru";
-    private const string Url = "https://api.openweathermap.org/data/2.5/weather?";
-
-    private static readonly CancellationToken Cts = new();
-
     // Root myDeserializedClass = JsonSerializer.Deserialize<Root>(myJsonResponse);
 
-    private static async Task ConnectAsync()
+    private static async Task<string> ConnectAsync()
     {
         using var httpClient = new HttpClient();
 
@@ -29,19 +40,51 @@ internal static class Program
 
             var response = JsonSerializer.Deserialize<Root>(responseContent);
 
-            Console.WriteLine($"Температура в городе {response?.Name}: {response?.Main?.Temperature} градусов");
+            var header = $"Температура в городе {response?.Name}: {response?.Main?.Temperature} градусов\n";
 
             foreach (Weather weather in response?.Weather!)
             {
-                Console.WriteLine($"Погода: {weather.Main} - {weather.Description}");
-                Console.WriteLine($"Icon: {weather.Icon}");
+                header += $"Погода: {weather.Main} - {weather.Description}\n" +
+                          $"Icon: {weather.Icon}";
+
+                Console.WriteLine(header);
             }
+
+            return header;
         }
-        else
+
+        Console.WriteLine($"{(int)httpResponse.StatusCode} - {httpResponse.ReasonPhrase}");
+
+        return "Нет доступа к серверу";
+    }
+
+    private static async Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken cancellationToken)
+    {
+        if (update.Type == UpdateType.Message)
         {
-            Console.WriteLine($"{(int)httpResponse.StatusCode} - {httpResponse.ReasonPhrase}");
+            Message? message = update.Message;
+
+            if (message?.Text is null) return;
+
+            switch (message.Text.ToLower())
+            {
+                case "/start":
+                    await bot.SendTextMessageAsync(message.Chat, "Добро пожаловать 🖖", cancellationToken: cancellationToken);
+                    return;
+                case "/weather":
+                case "/погода":
+                    var response = await ConnectAsync();
+                    await bot.SendTextMessageAsync(message.Chat, response, cancellationToken: cancellationToken);
+                    return;
+            }
+
+            await bot.SendTextMessageAsync(message.Chat, "💡", cancellationToken: cancellationToken);
         }
     }
 
-    //private async Task HandleUpdateAsync()
+    private static async Task HandleErrorAsync(ITelegramBotClient bot, Exception exception,
+        CancellationToken cancellationToken)
+    {
+        await Task.Run(() => Console.WriteLine($"{exception}"), cancellationToken);
+    }
 }
