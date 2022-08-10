@@ -13,6 +13,8 @@ internal static class Program
     private const string UrlParameters = $"q=Ишим&appid={Configuration.ApiKey}&units=metric&lang=ru";
     private const string Url = "https://api.openweathermap.org/data/2.5/weather?";
 
+    private static readonly CancellationToken Cts = new();
+
     // Root myDeserializedClass = JsonSerializer.Deserialize<Root>(myJsonResponse);
 
     private static async Task ConnectAsync()
@@ -40,4 +42,6 @@ internal static class Program
             Console.WriteLine($"{(int)httpResponse.StatusCode} - {httpResponse.ReasonPhrase}");
         }
     }
+
+    //private async Task HandleUpdateAsync()
 }
