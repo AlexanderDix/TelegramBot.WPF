@@ -26,8 +26,6 @@ internal static class Program
         Console.ReadLine();
     }
 
-    // Root myDeserializedClass = JsonSerializer.Deserialize<Root>(myJsonResponse);
-
     private static async Task<string> ConnectAsync()
     {
         using var httpClient = new HttpClient();
