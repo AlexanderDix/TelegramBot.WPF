@@ -2,19 +2,23 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using ConsoleTelegramBot;
 using Telegram.Bot;
 using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using TelegramBot.Infrastructure;
+using TelegramBot.Models;
 
 namespace TelegramBot.Services;
 
 internal class BotManager
 {
+
     #region Fields
 
     private readonly CancellationTokenSource _cts = new();
+    private readonly MessageManager _messageManager;
+    private readonly ITelegramBotClient _botClient;
 
     #endregion
 
@@ -53,25 +57,28 @@ internal class BotManager
         _cts.Cancel();
     }
 
-    private void Start()
+    public async void SendMessageAsync(Sender selectedSender, string message)
     {
-        ITelegramBotClient botClient = new TelegramBotClient(Configuration.Token);
-        CancellationToken cancellationToken = _cts.Token;
-        var receiverOptions = new ReceiverOptions()
-        {
-            AllowedUpdates = { }
-        };
-
-        botClient.StartReceiving(HandleUpdateAsync, HandleErrorAsync, receiverOptions, cancellationToken);
+        _messageManager.AddMessage(selectedSender, message);
+        await _botClient.SendTextMessageAsync(selectedSender.ChatId, message);
     }
 
     #endregion
 
     #region Constructors
 
-    public BotManager()
+    public BotManager(MessageManager messageManager)
     {
-        Start();
+        _messageManager = messageManager;
+
+        _botClient = new TelegramBotClient(Configuration.Token);
+        CancellationToken cancellationToken = _cts.Token;
+        var receiverOptions = new ReceiverOptions()
+        {
+            AllowedUpdates = { }
+        };
+
+        _botClient.StartReceiving(HandleUpdateAsync, HandleErrorAsync, receiverOptions, cancellationToken);
     }
 
     #endregion
