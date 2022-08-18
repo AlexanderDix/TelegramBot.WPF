@@ -5,7 +5,34 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         DataContext="{Binding MainWindowModel, Source={StaticResource Locator}}"
         Title="{Binding Title}" Height="450" Width="800">
-    <Grid>
+    <Border Margin="2"
+            Style="{StaticResource +DefaultBorderStyle}">
+        <Grid Margin="3" Background="WhiteSmoke">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.4*" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
 
-    </Grid>
+            <Border Margin="0 0 2.5 0"
+                    Grid.Column="0"
+                    Style="{StaticResource +DefaultBorderStyle}">
+
+                <ListBox Style="{StaticResource +SendersListBoxStyle}"
+                         Margin="3">
+
+                </ListBox>
+            </Border>
+
+            <Border Margin="2.5 0 0 0"
+                    Grid.Column="1"
+                    Style="{StaticResource +DefaultBorderStyle}">
+
+                <ListBox Background="WhiteSmoke"
+                         BorderThickness="0"
+                         Margin="3">
+
+                </ListBox>
+            </Border>
+        </Grid>
+    </Border>
 </Window>
