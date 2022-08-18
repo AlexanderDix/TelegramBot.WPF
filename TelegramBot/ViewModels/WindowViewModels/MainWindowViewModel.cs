@@ -1,4 +1,6 @@
-﻿using TelegramBot.Services;
+﻿using System.Collections.ObjectModel;
+using TelegramBot.Models;
+using TelegramBot.Services;
 using TelegramBot.ViewModels.Base;
 
 namespace TelegramBot.ViewModels.WindowViewModels;
@@ -8,10 +10,21 @@ internal class MainWindowViewModel : ViewModel
     #region Fields
 
     private readonly BotManager _botManager;
+    private readonly MessageManager _messageManager;
 
     #endregion
 
     #region Properties
+
+    /// <summary>
+    /// Коллекция отправителей
+    /// </summary>
+    public ObservableCollection<Sender?> Senders => _messageManager.Senders;
+
+    /// <summary>
+    /// Коллекция сообщений от отправителей
+    /// </summary>
+    public ObservableCollection<SenderMessage?> Messages => _messageManager.Messages;
 
     #region Title : string - Заголовок окна
 
@@ -43,9 +56,10 @@ internal class MainWindowViewModel : ViewModel
 
     #region Constructors
 
-    public MainWindowViewModel(BotManager botManager)
+    public MainWindowViewModel(BotManager botManager, MessageManager messageManager)
     {
         _botManager = botManager;
+        _messageManager = messageManager;
     }
 
     #endregion
