@@ -47,7 +47,10 @@ internal class BotManager
             if (message.Text.ToLower() == "/start")
             {
                 await bot.SendTextMessageAsync(message.Chat, "Добро пожаловать 🖖", cancellationToken: cancellationToken);
+                return;
             }
+
+            _messageManager.AddMessage(message);
         }
     }
 

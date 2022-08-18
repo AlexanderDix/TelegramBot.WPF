@@ -18,6 +18,8 @@
                     Style="{StaticResource +DefaultBorderStyle}">
 
                 <ListBox Style="{StaticResource +SendersListBoxStyle}"
+                         SelectedItem="{Binding SelectedSender}"
+                         ItemsSource="{Binding Senders}"
                          Margin="3">
 
                 </ListBox>
@@ -28,7 +30,7 @@
                     Style="{StaticResource +DefaultBorderStyle}">
 
                 <ListBox Background="WhiteSmoke"
-                         BorderThickness="0"
+                         ItemsSource="{Binding SelectedSender.Messages, FallbackValue=[Error]}"
                          Margin="3">
 
                 </ListBox>
