@@ -1,13 +1,27 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:models="clr-namespace:TelegramBot.Models">
-    <Style TargetType="ListBoxItem" x:Key="-DefaultListBoxStyle">
+
+    <Style TargetType="ListBoxItem" x:Key="-SendersItemContainerStyle">
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="BorderThickness" Value="0" />
     </Style>
 
+    <Style TargetType="ListBoxItem" x:Key="-MessagesItemContainerStyle">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="LightSlateGray" />
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="Padding" Value="5" />
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="15" />
+            </Style>
+        </Style.Resources>
+    </Style>
+
     <Style TargetType="ListBox" x:Key="+SendersListBoxStyle">
-        <Setter Property="ItemContainerStyle" Value="{StaticResource -DefaultListBoxStyle}" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource -SendersItemContainerStyle}" />
         <Setter Property="Background" Value="WhiteSmoke" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="ItemTemplate">
@@ -19,6 +33,28 @@
                             <Run Text="{Binding LastName}" />
                         </TextBlock>
                     </DockPanel>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ListBox" x:Key="+MessagesListBoxStyle">
+        <Setter Property="ItemContainerStyle" Value="{StaticResource -MessagesItemContainerStyle}" />
+        <Setter Property="Background" Value="WhiteSmoke" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate DataType="{x:Type models:SenderMessage}">
+                    <StackPanel>
+                        <TextBlock x:Name="TextBlock" Text="{Binding Text}" FontSize="14" />
+                        <TextBlock Text="{Binding Date, StringFormat=dd.MM:HH.mm}" FontSize="10" HorizontalAlignment="Right"
+                                   Margin="0,3" />
+                    </StackPanel>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsBot}" Value="True">
+                            <Setter TargetName="TextBlock" Property="HorizontalAlignment" Value="Right" />
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
                 </DataTemplate>
             </Setter.Value>
         </Setter>

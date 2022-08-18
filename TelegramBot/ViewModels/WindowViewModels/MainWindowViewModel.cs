@@ -38,6 +38,18 @@ internal class MainWindowViewModel : ViewModel
         set => Set(ref _title, value);
     }
 
+    #region SelectedSender : Sender - Выбранный отправитель
+
+    private Sender? _selectedSender;
+
+    public Sender? SelectedSender
+    {
+        get => _selectedSender;
+        set => Set(ref _selectedSender, value);
+    }
+
+    #endregion
+
     #endregion
 
     #endregion
