@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -14,39 +15,37 @@ internal class WeatherManager
     private const string UrlParameters = $"&appid={Configuration.ApiKey}&units=metric&lang=ru";
 
     /// <summary>
-    /// Получить данные о погоде в указанном городе
+    /// Отправляем пользователю погодную сводку
     /// </summary>
-    /// <param name="city">Город, в котором необходимо узнать погоду, стандартное значение - Москва</param>
-    /// <returns>Возвращает класс Root с погодой в указанном городе</returns>
-    private async Task<Root?> GetWeatherAsync(string city = "Москва")
+    /// <param name="city">Название города</param>
+    /// <returns>Возвращает строку с данными о погоде</returns>
+    public async Task<string> SendWeatherAsync(string city)
     {
         using var httpClient = new HttpClient();
 
         HttpResponseMessage httpResponse = await httpClient.GetAsync($"{Url}q={city}{UrlParameters}");
 
-        if (!httpResponse.IsSuccessStatusCode) return null;
+        switch (httpResponse.StatusCode)
+        {
+            case HttpStatusCode.Unauthorized:
+                return "Ошибка со стороны сервиса";
+            case HttpStatusCode.NotFound:
+                return "Указанного города не существует";
+            case HttpStatusCode.TooManyRequests:
+                return "Превышено количество вызовов";
+        }
 
         var responseContent = await httpResponse.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<Root>(responseContent);
-    }
+        var root = JsonSerializer.Deserialize<Root>(responseContent);
 
-    /// <summary>
-    /// Отправить данные о погоде пользователю
-    /// </summary>
-    /// <param name="city">Город</param>
-    /// <returns>Возвращает строку с данными о погоде</returns>
-    public async Task<string> SendWeatherAsync(string city = "Москва")
-    {
-        Root? weather = await GetWeatherAsync(city);
+        if (root is null) return "Ошибка в получении данных";
 
-        if (weather is null) return "Ошибка в получении данных";
+        Weather? weather = root.Weather?.FirstOrDefault();
 
-        Weather? test = weather.Weather?.FirstOrDefault();
-
-        return $"<b>ПОГОДА В ГОРОДЕ {city.ToUpper()}</b>\n\n" +
-               $"Температура: {weather.Main?.Temperature} °C\n" +
-               $"Ощущается как: {weather.Main?.FeelsLike} °C\n" +
-               $"На улице {test?.Description} {GetIcon(test!.Id)}\n";
+        return $"ПОГОДА В ГОРОДЕ {city.ToUpper()}\n\n" +
+               $"Температура: {root.Main?.Temperature} °C\n" +
+               $"Ощущается как: {root.Main?.FeelsLike} °C\n" +
+               $"На улице {weather?.Description} {GetIcon(weather!.Id)}";
     }
 
     /// <summary>
