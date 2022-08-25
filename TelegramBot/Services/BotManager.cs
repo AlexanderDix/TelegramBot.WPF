@@ -90,10 +90,7 @@ internal class BotManager
 
         _botClient = new TelegramBotClient(Configuration.Token);
         CancellationToken cancellationToken = _cts.Token;
-        var receiverOptions = new ReceiverOptions()
-        {
-            AllowedUpdates = { }
-        };
+        var receiverOptions = new ReceiverOptions();
 
         _botClient.StartReceiving(HandleUpdateAsync, HandleErrorAsync, receiverOptions, cancellationToken);
     }
