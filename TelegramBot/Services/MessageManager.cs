@@ -89,6 +89,23 @@ internal class MessageManager
         Serializator.Serialize(Senders);
     }
 
+    public void AddMessage(User? from, string message)
+    {
+        Sender? sender = Senders.FirstOrDefault(s => s?.UserName == from?.Username);
+        var msg = new SenderMessage()
+        {
+            Text = message,
+            Date = DateTime.Now
+        };
+
+        if (sender is null) return;
+
+        _dispatcher.Invoke(() => sender.Messages.Add(msg));
+        Messages.Add(msg);
+
+        Serializator.Serialize(Senders);
+    }
+
     #endregion
 
     #region Constructors

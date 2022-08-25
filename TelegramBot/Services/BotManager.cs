@@ -53,15 +53,16 @@ internal class BotManager
                     break;
             }
 
+            _messageManager.AddMessage(message);
+
             if (message.Text.StartsWith("/weather("))
             {
                 var cityName = message.Text.Split('(')[1].Split(')')[0];
                 var weather = await _weatherManager.SendWeatherAsync(cityName);
-                await bot.SendTextMessageAsync(message.Chat, weather, cancellationToken: cancellationToken,
-                    parseMode: ParseMode.Html);
-            }
+                await bot.SendTextMessageAsync(message.Chat, weather, cancellationToken: cancellationToken);
 
-            _messageManager.AddMessage(message);
+                _messageManager.AddMessage(message.From, weather);
+            }
         }
     }
 
