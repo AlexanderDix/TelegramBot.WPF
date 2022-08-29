@@ -44,6 +44,7 @@
                     <Button Style="{StaticResource ButtonSendStyle}"
                             Command="{Binding SendMessage}"
                             HorizontalAlignment="Right"
+                            IsDefault="True"
                             MinWidth="50" MinHeight="25">
                         <fa5:ImageAwesome Icon="Solid_PaperPlane" Height="20" 
                                           Foreground="{StaticResource MainTheme.ForegroundColor}"/>
