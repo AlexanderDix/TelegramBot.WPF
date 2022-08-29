@@ -74,7 +74,7 @@ internal class MessageManager
     /// <param name="message">Сообщение от бота</param>
     public void AddMessage(Sender? selectedSender, string? message)
     {
-        Sender? sender = Senders.FirstOrDefault(s => s?.UserName == selectedSender.UserName);
+        Sender? sender = Senders.FirstOrDefault(s => s?.UserName == selectedSender!.UserName);
         var msg = new SenderMessage
         {
             Text = message,

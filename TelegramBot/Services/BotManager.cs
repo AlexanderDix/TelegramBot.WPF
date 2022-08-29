@@ -76,7 +76,7 @@ internal class BotManager
     public async void SendMessageAsync(Sender? selectedSender, string? message)
     {
         _messageManager.AddMessage(selectedSender, message);
-        await _botClient.SendTextMessageAsync(selectedSender.ChatId, message);
+        await _botClient.SendTextMessageAsync(selectedSender!.ChatId, message!);
     }
 
     #endregion

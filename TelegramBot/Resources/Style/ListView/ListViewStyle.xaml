@@ -51,7 +51,7 @@
                 <ControlTemplate TargetType="ListViewItem">
                     <Border x:Name="Border"
                             Background="{TemplateBinding Background}"
-                            CornerRadius="10" MinWidth="250" MaxWidth="500"
+                            CornerRadius="10 10 10 0" MinWidth="250" MaxWidth="500"
                             HorizontalAlignment="Left"
                             Margin="5,2.5,2.5,5" Padding="5">
 
@@ -76,6 +76,7 @@
                     <ControlTemplate.Triggers>
                         <DataTrigger Binding="{Binding IsBot}" Value="True">
                             <Setter TargetName="Border" Property="HorizontalAlignment" Value="Right" />
+                            <Setter TargetName="Border" Property="CornerRadius" Value="10 10 0 10"/>
 
                             <Setter TargetName="TextBlock" Property="Text" Value="БОТ" />
                             <Setter TargetName="TextBlock" Property="Height" Value="Auto" />
