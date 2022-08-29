@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
+using System.Windows.Input;
+using TelegramBot.Infrastructure.Commands;
 using TelegramBot.Models;
 using TelegramBot.Services;
 using TelegramBot.ViewModels.Base;
@@ -72,17 +73,46 @@ internal class MainWindowViewModel : ViewModel
 
     #endregion
 
+    #region Message : string - Сообщение
+
+    ///<summary>Сообщение</summary>
+    private string? _message;
+
+    ///<summary>Сообщение</summary>
+    public string? Message
+    {
+        get => _message;
+        set => Set(ref _message, value);
+    }
+
+    #endregion
+
     #endregion
 
     #region Commands
 
+    #region SendMessage - Команда отправки сообщения
 
+    private ICommand? _sendMessage;
+
+    ///<summary>Команда отправки сообщения</summary>
+    public ICommand SendMessage => _sendMessage
+        ??= new LambdaCommand(OnSendMessageExecuted, CanSendMessageExecute);
+
+    private bool CanSendMessageExecute(object? p) => 
+        !string.IsNullOrWhiteSpace(Message) && SelectedSender != null;
+
+    private void OnSendMessageExecuted(object? p)
+    {
+        _botManager.SendMessageAsync(SelectedSender, Message);
+        Message = default;
+    }
+
+    #endregion
 
     #endregion
 
     #region Methods
-
-
 
     #endregion
 

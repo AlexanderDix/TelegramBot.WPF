@@ -35,12 +35,14 @@
             <DockPanel>
 
                 <Grid DockPanel.Dock="Bottom">
-                    <TextBox Style="{StaticResource SendingMessageBoxStyle}" 
+                    <TextBox Style="{StaticResource SendingMessageBoxStyle}"
+                             Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}"
                              TextWrapping="Wrap" 
                              MaxHeight="100" Padding="5 5 50 5"
                              FontSize="18"/>
 
-                    <Button Style="{StaticResource ButtonSendStyle}" 
+                    <Button Style="{StaticResource ButtonSendStyle}"
+                            Command="{Binding SendMessage}"
                             HorizontalAlignment="Right"
                             MinWidth="50" MinHeight="25">
                         <fa5:ImageAwesome Icon="Solid_PaperPlane" Height="20" 

@@ -72,7 +72,7 @@ internal class MessageManager
     /// </summary>
     /// <param name="selectedSender">Выбранный контакт, которому отправляется сообщение</param>
     /// <param name="message">Сообщение от бота</param>
-    public void AddMessage(Sender selectedSender, string message)
+    public void AddMessage(Sender? selectedSender, string? message)
     {
         Sender? sender = Senders.FirstOrDefault(s => s?.UserName == selectedSender.UserName);
         var msg = new SenderMessage
