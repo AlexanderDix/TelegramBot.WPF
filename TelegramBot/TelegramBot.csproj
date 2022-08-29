@@ -9,14 +9,17 @@
 
   <ItemGroup>
     <Folder Include="Models\Interfaces\" />
-    <Folder Include="Resources\Style\ListBox\" />
     <Folder Include="Resources\Style\Border\" />
+    <Folder Include="Resources\Style\ListView\" />
+    <Folder Include="Resources\Colors\" />
+    <Folder Include="Resources\Style\Button\" />
     <Folder Include="Services\Interfaces\" />
     <Folder Include="ViewModels\Base\" />
     <Folder Include="ViewModels\WindowViewModels\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FontAwesome5" Version="2.1.11" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Telegram.Bot" Version="18.0.0" />
     <PackageReference Include="Telegram.Bot.Extensions.Polling" Version="1.0.2" />

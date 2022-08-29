@@ -1,0 +1,94 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../../Colors/MainBrushes.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <SolidColorBrush Color="#d7b7b7" x:Key="MainTheme.MessageCard.BackgroundColor" />
+    <SolidColorBrush Color="#9a8282" x:Key="MainTheme.Selected.BackgroundColor" />
+    <SolidColorBrush Color="#d3d3d3" x:Key="MainTheme.MouseOver.BackgroundColor" />
+
+    <Style TargetType="ListViewItem" x:Key="SenderCard">
+        <Setter Property="Background" Value="{StaticResource MainTheme.BackgroundColor}" />
+        <Setter Property="Foreground" Value="{StaticResource MainTheme.ForegroundColor}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border Background="{TemplateBinding Background}"
+                            MaxWidth="280"
+                            MaxHeight="60"
+                            Padding="5">
+
+                        <StackPanel>
+
+                            <TextBlock FontSize="18">
+                                <Run Text="{Binding FirstName}" />
+                                <Run Text="{Binding LastName}" />
+                            </TextBlock>
+                        </StackPanel>
+
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{StaticResource MainTheme.Selected.BackgroundColor}" />
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource MainTheme.MouseOver.BackgroundColor}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="ListViewItem" x:Key="MessageCard">
+        <Setter Property="Background" Value="{StaticResource MainTheme.MessageCard.BackgroundColor}" />
+        <Setter Property="Foreground" Value="{StaticResource MainTheme.ForegroundColor}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border x:Name="Border"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="10" MinWidth="250" MaxWidth="500"
+                            HorizontalAlignment="Left"
+                            Margin="5,2.5,2.5,5" Padding="5">
+
+                        <StackPanel>
+
+                            <TextBlock x:Name="TextBlock"
+                                       Height="0"
+                                       FontWeight="Bold" />
+
+                            <TextBlock Text="{Binding Text}"
+                                       FontSize="16"
+                                       Margin="10,0,40,0"
+                                       TextWrapping="Wrap" />
+
+                            <TextBlock Text="{Binding Date, StringFormat=HH:mm}"
+                                       FontSize="12"
+                                       Margin="0,0,0,5"
+                                       HorizontalAlignment="Right" />
+                        </StackPanel>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsBot}" Value="True">
+                            <Setter TargetName="Border" Property="HorizontalAlignment" Value="Right" />
+
+                            <Setter TargetName="TextBlock" Property="Text" Value="БОТ" />
+                            <Setter TargetName="TextBlock" Property="Height" Value="Auto" />
+                            <Setter TargetName="TextBlock" Property="Margin" Value="0,0,0,5" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{StaticResource MainTheme.Selected.BackgroundColor}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>
