@@ -6,8 +6,11 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Style/ListBox/ListBoxStyles.xaml" />
                 <ResourceDictionary Source="Resources/Style/Border/BordersStyles.xaml" />
+                <ResourceDictionary Source="Resources/Style/ListView/ListViewStyle.xaml" />
+                <ResourceDictionary Source="Resources/Colors/MainBrushes.xaml" />
+                <ResourceDictionary Source="Resources/Style/TextBox/TextBoxStyle.xaml" />
+                <ResourceDictionary Source="Resources/Style/Button/ButtonStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <vm:ViewModelLocator x:Key="Locator" />

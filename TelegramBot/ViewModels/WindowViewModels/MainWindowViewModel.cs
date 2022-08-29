@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
 using TelegramBot.Models;
 using TelegramBot.Services;
 using TelegramBot.ViewModels.Base;
@@ -29,7 +31,7 @@ internal class MainWindowViewModel : ViewModel
     #region Title : string - Заголовок окна
 
     ///<summary>Заголовок окна</summary>
-    private string? _title = "Заголовок";
+    private string? _title = "TelegramBotUI";
 
     ///<summary>Заголовок окна</summary>
     public string? Title
@@ -47,7 +49,25 @@ internal class MainWindowViewModel : ViewModel
     public Sender? SelectedSender
     {
         get => _selectedSender;
-        set => Set(ref _selectedSender, value);
+        set
+        {
+            Set(ref _selectedSender, value);
+            VisibilityMessages = Visibility.Visible;
+        }
+    }
+
+    #endregion
+
+    #region VisibilityMessages : Visibility - Отображение блока сообщений
+
+    ///<summary>Отображение блока сообщений</summary>
+    private Visibility _visibilityMessages = Visibility.Hidden;
+
+    ///<summary>Отображение блока сообщений</summary>
+    public Visibility VisibilityMessages
+    {
+        get => _visibilityMessages;
+        set => Set(ref _visibilityMessages, value);
     }
 
     #endregion

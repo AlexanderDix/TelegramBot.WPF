@@ -3,38 +3,59 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa5="http://schemas.fontawesome.com/icons/"
         DataContext="{Binding MainWindowModel, Source={StaticResource Locator}}"
-        Title="{Binding Title}" Height="450" Width="800">
-    <Border Margin="2"
-            Style="{StaticResource +DefaultBorderStyle}">
-        <Grid Margin="3" Background="WhiteSmoke">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.4*" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+        Title="{Binding Title}" Height="720" Width="1280" Background="{StaticResource MainTheme.BackgroundColor}"
+        ResizeMode="CanResizeWithGrip" Foreground="{StaticResource MainTheme.ForegroundColor}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
 
-            <Border Margin="0 0 2.5 0"
-                    Grid.Column="0"
-                    Style="{StaticResource +DefaultBorderStyle}">
+        <GroupBox Grid.Column="0"
+                  Header="Контакты"
+                  FontSize="16"
+                  Margin="5 0 2.5 5">
 
-                <ListBox Style="{StaticResource +SendersListBoxStyle}"
-                         SelectedItem="{Binding SelectedSender}"
-                         ItemsSource="{Binding Senders}"
-                         Margin="3">
+            <ListView ItemsSource="{Binding Senders}"
+                      SelectedItem="{Binding SelectedSender}"
+                      Background="{StaticResource MainTheme.BackgroundColor}"
+                      Foreground="{StaticResource MainTheme.ForegroundColor}"
+                      ItemContainerStyle="{StaticResource SenderCard}" BorderThickness="0" />
+        </GroupBox>
 
-                </ListBox>
-            </Border>
+        <GroupBox Grid.Column="1"
+                  Header="Сообщения"
+                  FontSize="16"
+                  Margin="2.5 0 5 5"
+                  BorderThickness="0"
+                  Visibility="{Binding VisibilityMessages}">
 
-            <Border Margin="2.5 0 0 0"
-                    Grid.Column="1"
-                    Style="{StaticResource +DefaultBorderStyle}">
+            <DockPanel>
 
-                <ListBox Style="{StaticResource +MessagesListBoxStyle}"
-                         ItemsSource="{Binding SelectedSender.Messages, FallbackValue=[Error]}"
-                         Margin="3">
+                <Grid DockPanel.Dock="Bottom">
+                    <TextBox Style="{StaticResource SendingMessageBoxStyle}" 
+                             TextWrapping="Wrap" 
+                             MaxHeight="100" Padding="5 5 50 5"
+                             FontSize="18"/>
 
-                </ListBox>
-            </Border>
-        </Grid>
-    </Border>
+                    <Button Style="{StaticResource ButtonSendStyle}" 
+                            HorizontalAlignment="Right"
+                            MinWidth="50" MinHeight="25">
+                        <fa5:ImageAwesome Icon="Solid_PaperPlane" Height="20" 
+                                          Foreground="{StaticResource MainTheme.ForegroundColor}"/>
+                    </Button>
+                </Grid>
+
+                <ListView ItemsSource="{Binding SelectedSender.Messages, FallbackValue=[Error]}"
+                          Background="{StaticResource MainTheme.BackgroundColor}"
+                          Foreground="{StaticResource MainTheme.ForegroundColor}"
+                          ItemContainerStyle="{StaticResource MessageCard}" BorderThickness="0" />
+
+            </DockPanel>
+        </GroupBox>
+
+    </Grid>
+
 </Window>
